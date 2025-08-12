@@ -6,7 +6,7 @@ async function generateJobDescription(jobDetails) {
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
     contents: `
-        Generate a professional and detailed job description baseed on the following details:
+        Generate a professional and detailed job description based on the following details:
         - Job Title: ${jobDetails.title}
         - Company: ${jobDetails.company}
         - Location: ${jobDetails.location}

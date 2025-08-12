@@ -32,6 +32,59 @@ jobController.create = async (req, res) => {
     }
 };
 
+jobController.update = async (req, res) => {
+    const jobID = req.params.id;
+    const { error, value } = jobValidationSchema.validate(req.body, { abortEarly: false });
+
+    if (error) {
+        return res.status(400).json({ error: error.details.map(err => err.message) });
+    }
+
+    try {
+        if(req.role !== "Moderator") {
+            return res.status(403).json({ error: "Forbidden: Only moderators can update jobs." });
+        }
+
+        const job = await Job.findById(jobID);
+        if(!job) {
+            return res.status(404).json({ error: "Job not found." });
+        }
+
+        if (!value.description || value.description.trim() === "") {
+            value.description = await generateJobDescription(value);
+        }
+
+        Object.assign(job, value);
+        await job.save();
+
+        res.status(201).json({ success: true, message: "Job updated successfully!", job });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Something went wrong while creating the job." });
+    }
+};
+
+jobController.getAllJobs = async (req, res) => {
+    try {
+        const jobs = await Job.find();
+        res.status(200).json({ success: true, jobs });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Something went wrong while fetching jobs." });
+    }
+};
+
+jobController.getSpecificJob = async (req, res) => {
+    const jobID = req.params.id;
+    try {
+        const job = await Job.find({ _id: jobID });
+        res.status(200).json({ success: true, job });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Something went wrong while fetching job." });
+    }
+};
+
 jobController.apply = async (req, res) => {
     const jobID = req.params.id;
 
@@ -76,5 +129,85 @@ jobController.list = async (req, res) => {
         res.status(500).json({ success: false, message: "Something went wrong while fetching the data for the application." });
     }
 };
+
+jobController.save = async (req, res) => {
+    const jobID = req.params.id;
+
+    try {
+        if(req.role !== "User") {
+            return res.status(403).json({ error: "Forbidden: Only users can save jobs." });
+        }
+
+        const job = await Job.findOne({ _id: jobID });
+        if (!job) {
+            return res.status(404).json({ error: "Job not found." });
+        }
+
+        const user = await User.findById(req.userId);
+        if(user.savedJobs.includes(jobID)) {
+            return res.status(400).json({ error: "Job already saved." });
+        }
+
+        user.savedJobs.push(jobID);
+        await user.save();
+
+        res.status(200).json({ success: true, message: "Job saved successfully." });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Something went wrong while saving the job." });
+    }
+};
+
+jobController.savedJobs = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId);
+        res.status(200).json({ success: true, savedJobs: user.savedJobs })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Something went wrong while fetching saved jobs." });
+    }
+};
+
+jobController.delete = async (req, res) => {
+    const jobID = req.params.id;
+
+    try {
+        if (req.role !== "Moderator" || req.role !== "Admin") {
+            return res.status(403).json({ error: "Forbidden: Only moderator or admin can delete jobs." });
+        }
+
+        const job = await Job.findByIdAndDelete(jobID);
+        if (!job) {
+            return res.status(404).json({ success: false, message: "Job not found." });
+        }
+
+        await User.updateMany({ appliedJobs: jobID }, { $pull: { appliedJobs: jobID }});
+        await User.updateMany({ savedJobs: jobID }, { $pull: { savedJobs: jobID }});
+
+        res.status(200).json({ success: true, message: "Job and associated applications deleted." });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Something went wrong while deleting the job." });
+    }
+};
+
+// jobController.filter = async (req, res) => {
+//     const { jobType, location, experienceLevel, salary } = req.query;
+
+//     let filterCriteria = {};
+
+//     if (jobType) {
+//         filterCriteria.jobType = jobType;
+//     }
+//     if (location) {
+//         filterCriteria.location = location;
+//     }
+//     if (experienceLevel) {
+//         filterCriteria.experienceLevel = experienceLevel;
+//     }
+//     if (salary) {
+//         filterCriteria.salary = salary;
+//     }
+// };
 
 module.exports = jobController;

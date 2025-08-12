@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Portal</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Job Portal System</h1>
+
+    <div id="auth">
+      <h2>Register</h2>
+      <form id="registerForm">
+        <input type="text" id="regName" placeholder="Name" required />
+        <input type="email" id="regEmail" placeholder="Email" required />
+        <input type="password" id="regPassword" placeholder="Password" required />
+        <select id="regRole">
+          <option value="User">User</option>
+          <option value="Moderator">Moderator</option>
+        </select>
+        <button type="submit">Register</button>
+      </form>
+
+      <h2>Login</h2>
+      <form id="loginForm">
+        <input type="email" id="loginEmail" placeholder="Email" required />
+        <input type="password" id="loginPassword" placeholder="Password" required />
+        <button type="submit">Login</button>
+      </form>
+    </div>
+
+    <div id="jobSection" class="hidden">
+      <h2>Create Job (Moderator Only)</h2>
+      <form id="jobForm">
+        <input type="text" id="title" placeholder="Job Title" required />
+        <input type="text" id="company" placeholder="Company" required />
+        <input type="text" id="location" placeholder="Location" required />
+        <input type="text" id="jobType" placeholder="Job Type (e.g., Full-Time)" required />
+        <input type="text" id="experienceLevel" placeholder="Experience Level" required />
+        <input type="text" id="salary" placeholder="Salary" />
+        <input type="date" id="deadline" required />
+        <textarea id="description" placeholder="Leave blank to auto-generate"></textarea>
+        <button type="submit">Create Job</button>
+      </form>
+
+      <h2>Apply to Job (User Only)</h2>
+      <form id="applyForm">
+        <input type="text" id="jobIdApply" placeholder="Enter Job ID to Apply" required />
+        <button type="submit">Apply</button>
+      </form>
+
+      <h2>View Applicants (Moderator Only)</h2>
+      <form id="viewApplicantsForm">
+        <input type="text" id="jobIdView" placeholder="Enter Job ID" required />
+        <button type="submit">View Applicants</button>
+      </form>
+
+      <div id="output"></div>
+    </div>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>
