@@ -1,11 +1,21 @@
 import React from 'react'
-import Login from './components/Login-Page/Login'
+import Navbar from './Navbar'
+import Footer from './Footer'
+import Companies from './Companies'
+import { CarouselSpacing } from './CarouselSpacing'
+import JobPilot from './JobPilot'
+import { DropdownMenuDemo } from './DropdownMenuDemo'
 
 const App = () => {
   return (
-    <div>
-      <Login />
-    </div>
+    <>
+      <Navbar />
+      <Companies />
+      <JobPilot />
+      <CarouselSpacing />
+      <Footer />
+      {/* <DropdownMenuDemo /> */}
+    </>
   )
 }
 
