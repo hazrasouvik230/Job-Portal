@@ -6,10 +6,12 @@ const LoginModal = (props) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [role, setRole] = useState("");
 
     const [nameError, setNameError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
+    const [roleError, setRoleError] = useState(false);
 
     const handleState = () => {
         setState(prev => (prev === "login" ? "signup": "login"));
@@ -23,9 +25,12 @@ const LoginModal = (props) => {
         }
         setEmailError(email === "" || !/\S+@\S+\.\S+/.test(email));
         setPasswordError(password === "" || password.length < 4);
+        if(state === "signup") {
+            setRoleError(role === "");
+        }
 
         if (email && password && !emailError && !passwordError) {
-            console.log(name, email, password);
+            console.log(name, email, password, role);
             props.handleClose();
         }
     };
@@ -58,8 +63,28 @@ const LoginModal = (props) => {
                 <div className="mb-4">
                     <label htmlFor="password">Password</label><br />
                     <input type="password" name="password" id="password" className={`border w-full rounded p-2 required:border-red-500 ${passwordError ? 'outline-red-600' : 'outline-none'}`} value={password} onChange={(e) => setPassword(e.target.value)} />
-                    {passwordError && <p className="text-red-500 text-sm">Password must be at least 6 characters.</p>}
+                    {passwordError && <p className="text-red-500 text-sm">Password must be at least 4 characters.</p>}
                 </div>
+
+                {
+                    state === "signup" && (
+                        <div className="flex flex-col mb-8">
+                            <p className="mb-1">Choose your role</p>
+                            <div className="flex items-center justify-between">
+                                <div className={`border px-6 py-2 rounded flex items-center justify-center gap-2 cursor-pointer duration-300 ease-in-out ${role === "student" ? "bg-blue-100 border-blue-500 shadow-md scale-105" : "hover:bg-gray-300/50 hover:scale-105 hover:shadow-lg"}`} onClick={() => setRole("student")}>
+                                    <input type="radio" id="student" name="role" value="student" checked={role === "student"} onChange={() => setRole("student")} className="hidden" />
+                                    <label htmlFor="student" className="cursor-pointer">Become a Student</label>
+                                </div>
+
+                                <div className={`border px-6 py-2 rounded flex items-center justify-center gap-2 cursor-pointer duration-300 ease-in-out ${role === "employee" ? "bg-blue-100 border-blue-500 shadow-md scale-105" : "hover:bg-gray-300/50 hover:scale-105 hover:shadow-lg"}`} onClick={() => setRole("employee")}>
+                                    <input type="radio" id="employee" name="role" value="employee" checked={role === "employee"} onChange={() => setRole("employee")} className="hidden" />
+                                    <label htmlFor="employee" className="cursor-pointer">Become an Employee</label>
+                                </div>
+                            </div>
+                            {roleError && <p className="text-red-500 text-sm">Please select your role.</p>}
+                        </div>
+                    )
+                }
 
                 <div className="flex justify-center m-4">
                     <input type="submit" value={ state === "login" ? "Signin" : "Signup" } className="bg-blue-400 py-1 px-6 rounded-md font-semibold text-white hover:scale-105 cursor-pointer hover:shadow-lg duration-300 ease-in-out w-2/3" />
