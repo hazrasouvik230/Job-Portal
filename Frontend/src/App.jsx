@@ -10,10 +10,12 @@ import MiniSidebar from './MiniSidebar'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Dashboard from './Dashboard'
 import CreateJob from './CreateJob'
+import { Toaster } from 'sonner'
 
 const App = () => {
   return (
     <>
+      <Toaster position="top-center" richColors />
       <Navbar />
       {/* <Hero />
       <Companies />

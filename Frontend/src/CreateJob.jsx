@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import CreatableSelect from 'react-select/creatable';
 
+import { toast } from "sonner"
+
 const CreateJob = () => {
     const [title, setTitle] = useState("");
     
@@ -32,8 +34,18 @@ const CreateJob = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log(`Title: ${title}, location: ${location}`);
-    }
+        console.log(`Title: ${title}, location: ${selectLocation.map(loc => loc.label).join(", ")}`);
+
+        toast.success("Job posted successfully!", {
+            description: new Date().toLocaleString(),
+            action: {
+                label: <span className=" text-yellow-500 hover:text-red-700">Undo</span>,
+                onClick: () => console.log("Undo clicked"),
+            },
+        });
+
+    };
+
 
     return (
         <form className='p-4' onSubmit={handleSubmit}>
