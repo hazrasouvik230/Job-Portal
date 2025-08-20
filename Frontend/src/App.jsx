@@ -17,19 +17,19 @@ const App = () => {
     <>
       <Toaster position="top-center" richColors />
       <Navbar />
-      {/* <Hero />
+      <Hero />
       <Companies />
       <JobPilot />
       <CarouselSpacing />
-      <Footer /> */}
+      <Footer />
       {/* <Info /> */}
-      <BrowserRouter>
+      {/* <BrowserRouter>
         <MiniSidebar />
         <Routes>
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/create-job' element={<CreateJob />} />
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter> */}
     </>
   )
 }

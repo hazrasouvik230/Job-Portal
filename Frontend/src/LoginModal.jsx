@@ -17,15 +17,18 @@ const LoginModal = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        if (!email || !password || (state === 'signup' && !name)) {
-            setError(true);
-            return;
-        }
-        console.log(name, email, password);
 
-        props.onClose();
-    }
+        if(state === "signup") {
+            setNameError(name === "");
+        }
+        setEmailError(email === "" || !/\S+@\S+\.\S+/.test(email));
+        setPasswordError(password === "" || password.length < 4);
+
+        if (email && password && !emailError && !passwordError) {
+            console.log(name, email, password);
+            props.handleClose();
+        }
+    };
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -40,19 +43,22 @@ const LoginModal = (props) => {
                     state === "signup" && (
                         <div className="mb-4">
                             <label htmlFor="name" className="text-left">Full name</label><br />
-                            <input type="text" name="name" id="name" className={`border w-full rounded p-2 required:border-red-500 ${error ? 'outline-red-600' : 'outline-none'}`} value={name} onChange={(e) => setName(e.target.value)} />
+                            <input type="text" name="name" id="name" className={`border w-full rounded p-2 required:border-red-500 ${nameError ? 'outline-red-600' : 'outline-none'}`} value={name} onChange={(e) => setName(e.target.value)} />
+                            {nameError && <p className="text-red-500 text-sm">Name is required.</p>}
                         </div>
                     )
                 }
 
                 <div className="mb-4">
                     <label htmlFor="email" className="text-left">Email address</label><br />
-                    <input type="email" name="email" id="email" className={`border w-full rounded p-2 required:border-red-500 ${error ? 'outline-red-600' : 'outline-none'}`} value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <input type="email" name="email" id="email" className={`border w-full rounded p-2 required:border-red-500 ${emailError ? 'outline-red-600' : 'outline-none'}`} value={email} onChange={(e) => setEmail(e.target.value)} />
+                    {emailError && <p className="text-red-500 text-sm">Please enter a valid email.</p>}
                 </div>
 
                 <div className="mb-4">
                     <label htmlFor="password">Password</label><br />
-                    <input type="password" name="password" id="password" className={`border w-full rounded p-2 required:border-red-500 ${error ? 'outline-red-600' : 'outline-none'}`} value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <input type="password" name="password" id="password" className={`border w-full rounded p-2 required:border-red-500 ${passwordError ? 'outline-red-600' : 'outline-none'}`} value={password} onChange={(e) => setPassword(e.target.value)} />
+                    {passwordError && <p className="text-red-500 text-sm">Password must be at least 6 characters.</p>}
                 </div>
 
                 <div className="flex justify-center m-4">
