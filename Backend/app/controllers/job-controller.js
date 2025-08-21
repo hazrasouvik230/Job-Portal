@@ -18,12 +18,25 @@ jobController.create = async (req, res) => {
             return res.status(403).json({ error: "Forbidden: Only moderators can create jobs." });
         }
 
+        const user = await User.findById(req.userId);
+        if (!user) {
+            return res.status(404).json({ error: "User not found." });
+        }
+
+        // Enforce free post limit for unsubscribed moderators
+        if(!user.isSubscribed && user.jobPostCount >= 3) {
+            return res.status(403).json({ error: "Free posting limit reached. Please subscribe to post more jobs." })
+        }
+
         if(!value.description || value.description.trim() === "") {
             value.description = await generateJobDescription(value);
         }
 
         const job = new Job({ ...value, postedBy: req.userId });
         await job.save();
+
+        user.jobPostCount += 1;
+        await user.save();
 
         res.status(201).json({ success: true, message: "Job created successfully!", job });
     } catch (error) {

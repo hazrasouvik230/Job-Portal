@@ -15,7 +15,15 @@ const userSchema = new mongoose.Schema({
     savedJobs: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Job"
-    }]
+    }],
+    jobPostCount: {
+        type: Number,
+        default: 0
+    },
+    isSubscribed: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true });
 
 const User = mongoose.model("User", userSchema);
