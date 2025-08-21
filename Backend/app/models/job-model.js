@@ -17,6 +17,7 @@ const jobSchema = new mongoose.Schema({
         ref: "User"
     },
     deadline: Date,
+    interviewQuestions: String,
     applicants: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"

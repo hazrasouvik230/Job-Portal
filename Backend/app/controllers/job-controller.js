@@ -3,6 +3,7 @@ const jobValidationSchema = require("../validations/job-validation");
 const User = require("../models/user-model");
 
 const generateJobDescription = require("../utils/job-description");
+const generateInterviewQuestions = require("../utils/interview-questions");
 
 const jobController = {};
 
@@ -32,7 +33,9 @@ jobController.create = async (req, res) => {
             value.description = await generateJobDescription(value);
         }
 
-        const job = new Job({ ...value, postedBy: req.userId });
+        const QnA = await generateInterviewQuestions(value);
+
+        const job = new Job({ ...value, interviewQuestions: QnA, postedBy: req.userId });
         await job.save();
 
         user.jobPostCount += 1;
