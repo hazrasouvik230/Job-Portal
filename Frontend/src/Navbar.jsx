@@ -18,6 +18,8 @@ const Navbar = () => {
     { label: 'Jobs', path: '/jobs' },
     { label: 'Applied Jobs', path: '/applied-jobs' },
     { label: 'Saved Jobs', path: '/saved-jobs' },
+    { label: 'Create Job', path: '/create-job' },
+    { label: 'Profile', path: '/profile' }
   ];
 
   return (

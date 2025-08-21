@@ -42,6 +42,7 @@ import Users from './pages/Users'
 import Jobs from './pages/Jobs'
 import AppliedJobs from './pages/AppliedJobs'
 import SavedJobs from './pages/SavedJobs'
+import Profile from './pages/Profile'
 
 const App = () => {
   return (
@@ -58,6 +59,7 @@ const App = () => {
         <Route path='/jobs' element={<Jobs />} />
         <Route path='/applied-jobs' element={<AppliedJobs />} />
         <Route path='/saved-jobs' element={<SavedJobs />} />
+        <Route path='/profile' element={<Profile />} />
       </Routes>
 
       <Footer />
