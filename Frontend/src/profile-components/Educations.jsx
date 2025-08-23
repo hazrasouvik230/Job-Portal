@@ -74,7 +74,7 @@ const Educations = () => {
             </div>
 
             {
-                educationToggle && <>
+                educationToggle ? <>
                     <div>
                         <label htmlFor="institute-name">Institute name</label>
                         <input type="text" name="institute-name" id="institute-name" className='border w-full p-1.5 px-3 rounded' placeholder='Enter your institute name' value={instituteName} onChange={(e) => setInstituteName(e.target.value)}  />
@@ -110,11 +110,11 @@ const Educations = () => {
                         <button className='bg-green-500/80 px-8 py-1 rounded text-white cursor-pointer hover:scale-105 duration-300 ease-in-out hover:font-bold' onClick={handleEducation}>Save</button>
                         <button className='bg-red-500/80 px-8 py-1 rounded text-white cursor-pointer hover:scale-105 duration-300 ease-in-out hover:font-bold' onClick={handleCancel}>Cancel</button>
                     </div>
-                </>
+                </> : <p className='text-xs -mt-4'>Add education</p>
             }
 
         </div>
     )
 }
 
-export default Educations
+export default Educations;

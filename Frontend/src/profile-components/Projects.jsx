@@ -72,7 +72,7 @@ const Projects = () => {
 
 
             {
-                projectToggle && <>
+                projectToggle ? <>
                     <div>
                         <label htmlFor="project-title">Project title</label>
                         <input type="text" name="project-title" id="project-title" className='border w-full px-3 py-1 rounded' value={projectTitle} onChange={(e) => setProjectTitle(e.target.value)} />
@@ -103,7 +103,7 @@ const Projects = () => {
                         <button className='bg-green-500/80 px-8 py-1 rounded text-white cursor-pointer hover:scale-105 duration-300 ease-in-out hover:font-bold' onClick={handleExperience}>Save</button>
                         <button className='bg-red-500/80 px-8 py-1 rounded text-white cursor-pointer hover:scale-105 duration-300 ease-in-out hover:font-bold' onClick={handleCancel}>Cancel</button>
                     </div>
-                </>
+                </> : <p className='text-xs -mt-4'>Add projects</p>
             }
         </div>
     )

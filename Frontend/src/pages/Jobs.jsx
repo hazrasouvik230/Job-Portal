@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { CiBookmark } from "react-icons/ci";
+import { IoBookmark } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
 
 const Jobs = () => {
   const jobSamples = [
@@ -151,6 +152,7 @@ const Jobs = () => {
       id: 13,
       title: "Technical Writer",
       company: "DocuTech",
+      jobType: "Pat-time",
       location: "Remote",
       description: "Create technical documentation.",
       requirements: ["Markdown", "Git", "API Docs"],
@@ -164,7 +166,6 @@ const Jobs = () => {
       company: "NeuroNet",
       location: "San Jose, CA",
       jobType: "Freelance",
-      jobType: "Full-time",
       description: "Build AI models for NLP and CV.",
       requirements: ["Python", "TensorFlow", "PyTorch"],
       salary: "$150,000 - $180,000",
@@ -177,7 +178,6 @@ const Jobs = () => {
       company: "HelpDeskPro",
       jobType: "Freelance",
       location: "Miami, FL",
-      jobType: "Full-time",
       description: "Provide technical support.",
       requirements: ["Windows", "Networking", "Customer Service"],
       salary: "$50,000 - $70,000",
@@ -187,7 +187,6 @@ const Jobs = () => {
     {
       id: 16,
       title: "Cloud Engineer",
-      jobType: "Freelance",
       company: "SkyCompute",
       location: "Phoenix, AZ",
       jobType: "Full-time",
@@ -203,7 +202,6 @@ const Jobs = () => {
       title: "Database Administrator",
       company: "DataKeepers",
       location: "Dallas, TX",
-      jobType: "Full-time",
       description: "Maintain and optimize databases.",
       requirements: ["MySQL", "PostgreSQL", "Backup & Recovery"],
       salary: "$100,000 - $120,000",
@@ -248,18 +246,37 @@ const Jobs = () => {
     }
   ];
 
-  const [isApplied, setIsApplied] = useState(false);
+  const [appliedJobs, setAppliedJobs] = useState([]);
 
   const handleApplied = (id) => {
-    setIsApplied(true);
-  }
+    if(!appliedJobs.includes(id)) {
+      setAppliedJobs([...appliedJobs, id]);
+    }
+  };
+
+  const navigate = useNavigate();
+
+  const handleJob = (id) => {
+    navigate(`/jobs/${id}`);
+  };
+
+  const [savedJobs, setSavedJobs] = useState([]);
+
+  const handleSavedJobs = (id) => {
+    if(!savedJobs.includes(id)) {
+      setSavedJobs([id, ...savedJobs]);
+    }
+    console.log(savedJobs);
+  };
 
   return (
     <div className='bg-slate-400/50 p-4 flex flex-wrap items-center justify-center'>
       {
         jobSamples.map(job => {
           return <div key={job.id} className='relative bg-white border max-w-xs rounded-lg m-2 p-4 w-72'>
-            <CiBookmark className='absolute top-2 right-2 cursor-pointer hover:text-slate-400 duration-300 ease-in-out hover:scale-125' />
+            <IoBookmark className='absolute text-slate-400 top-2 right-2 cursor-pointer hover:text-slate-400 duration-300 ease-in-out hover:scale-125' onClick={() => {
+              handleSavedJobs(job.id);
+            }} />
             <h1 className='text-xl font-bold mb-1'>{job.title}</h1>
            
             <div className='flex gap-2'>
@@ -271,10 +288,12 @@ const Jobs = () => {
             <p className='text-xs font-thin'>{job.location}</p>
 
             <div className='flex items-center justify-between p-2 pb-0'>
-              <button className='bg-cyan-400/50 w-24 py-2 rounded cursor-pointer'>Details</button>
-              <button className='bg-cyan-400/50 w-24 py-2 rounded cursor-pointer' onClick={() => {
+              <button className='bg-cyan-400/50 w-24 py-2 rounded cursor-pointer hover:scale-105 duration-300 hover:shadow-lg hover:font-semibold' onClick={() => {
+                handleJob(job.id);
+              }}>Details</button>
+              <button className='bg-cyan-400/50 w-24 py-2 rounded cursor-pointer hover:scale-105 duration-300 hover:shadow-lg hover:font-semibold' onClick={() => {
                 handleApplied(job.id);
-              }}>{ isApplied === false ? "Apply now" : "Applied" }</button>
+              }}>{ appliedJobs.includes(job.id) ? "Applied" : "Apply now" }</button>
             </div>
           </div>
         })

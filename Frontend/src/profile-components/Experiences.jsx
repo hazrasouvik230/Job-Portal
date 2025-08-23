@@ -76,7 +76,7 @@ const Experiences = () => {
             </div>
 
             {
-                experienceToggle && <>
+                experienceToggle ? <>
                     <div>
                         <label htmlFor="experience-title">Job title</label>
                         <input type="text" name="experience-title" id="experience-title" className='border w-full px-3 py-1 rounded' value={experienceTitle} onChange={(e) => setExperienceTitle(e.target.value)} />
@@ -117,7 +117,7 @@ const Experiences = () => {
                         <button className='bg-green-500/80 px-8 py-1 rounded text-white cursor-pointer hover:scale-105 duration-300 ease-in-out hover:font-bold' onClick={handleExperience}>Save</button>
                         <button className='bg-red-500/80 px-8 py-1 rounded text-white cursor-pointer hover:scale-105 duration-300 ease-in-out hover:font-bold' onClick={handleCancel}>Cancel</button>
                     </div>
-                </>
+                </> : <p className='text-xs -mt-4'>Add experiences</p>
             }
         </div>
     )

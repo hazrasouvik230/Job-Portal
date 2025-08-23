@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import LoginModal from './LoginModal'
 import { useLocation, useNavigate } from 'react-router-dom';
+import { FaUser } from "react-icons/fa";
+import { IoNotifications } from "react-icons/io5";
+import Menu from './Menu';
 
 const Navbar = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -19,8 +22,17 @@ const Navbar = () => {
     { label: 'Applied Jobs', path: '/applied-jobs' },
     { label: 'Saved Jobs', path: '/saved-jobs' },
     { label: 'Create Job', path: '/create-job' },
-    { label: 'Profile', path: '/profile' }
+    { label: 'Panel', path: '/panel' }
   ];
+
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
+  const [showMenu, setShowMenu] = useState(false);
+  const handleMenu = () => {
+    setShowMenu(prev => !prev);
+  };
+
+  const [isNotifications, setIsNotifications] = useState(false);
 
   return (
     <>
@@ -36,14 +48,25 @@ const Navbar = () => {
           }
         </div>
 
-        <div>
-          <button className='bg-gray-400/50 px-3 py-1 rounded hover:bg-gray-500/50 sm:hidden'>X</button>
-          <button className='hidden bg-sky-400/85 text-white font-semibold hover:scale-[1.20] px-6 py-1 rounded transition duration-500 ease-in-out sm:flex' onClick={() => setIsLoginOpen(true)}>Login</button>
-        </div>
+        {
+          isLoggedIn ? <div className='flex gap-1'>
+            {
+              isNotifications && <IoNotifications className='text-md absolute top-2 right-9' />
+            }
+            <FaUser className='border text-3xl rounded-full cursor-pointer hover:scale-105' onClick={handleMenu} />
+
+            {
+              showMenu && <Menu setShowMenu={setShowMenu} />
+            }
+          </div> : <div>
+            <button className='bg-gray-400/50 px-3 py-1 rounded hover:bg-gray-500/50 sm:hidden'>X</button>
+            <button className='hidden bg-sky-400/85 text-white font-semibold hover:scale-[1.20] px-6 py-1 rounded transition duration-500 ease-in-out sm:flex' onClick={() => setIsLoginOpen(true)}>Login</button>
+          </div>
+        }
       </div>
 
       {
-        isLoginOpen && <LoginModal handleClose={handleClose} />
+        isLoginOpen && <LoginModal handleClose={handleClose} setIsLoggedIn={setIsLoggedIn} />
       }
     </>
   )

@@ -33,6 +33,8 @@ const LoginModal = (props) => {
             console.log(name, email, password, role);
             props.handleClose();
         }
+
+        props.setIsLoggedIn(true);
     };
 
     return (

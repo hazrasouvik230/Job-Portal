@@ -43,6 +43,9 @@ import Jobs from './pages/Jobs'
 import AppliedJobs from './pages/AppliedJobs'
 import SavedJobs from './pages/SavedJobs'
 import Profile from './pages/Profile'
+import JobDetails from './pages/JobDetails'
+import Panel from './Panel'
+import SpecificJobDetails from './SpecificJobDetails'
 
 const App = () => {
   return (
@@ -57,9 +60,12 @@ const App = () => {
         <Route path='/create-job' element={<CreateJob />} />
         <Route path='/users' element={<Users />} />
         <Route path='/jobs' element={<Jobs />} />
+        <Route path='/jobs/:id' element={<JobDetails />} />
         <Route path='/applied-jobs' element={<AppliedJobs />} />
         <Route path='/saved-jobs' element={<SavedJobs />} />
         <Route path='/profile' element={<Profile />} />
+        <Route path='/panel' element={<Panel />} />
+        <Route path='/HR-specific-job-details/:id' element={<SpecificJobDetails />} />
       </Routes>
 
       <Footer />
